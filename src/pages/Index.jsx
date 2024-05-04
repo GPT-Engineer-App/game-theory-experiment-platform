@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Input,
+  Select,
   Table,
   Tbody,
   Td,
@@ -15,9 +16,11 @@ import {
 } from '@chakra-ui/react';
 
 const Index = () => {
-  const [payoffMatrix, setPayoffMatrix] = useState([[0, 0], [0, 0]]);
+  const [payoffMatrix, setPayoffMatrix] = useState([[0, 0, 0, 0], [0, 0, 0, 0]]);
   const [gameResults, setGameResults] = useState([]);
   const [roundNumber, setRoundNumber] = useState(0);
+  const [player1Action, setPlayer1Action] = useState('');
+  const [player2Action, setPlayer2Action] = useState('');
 
   const handleInputChange = (value, row, col) => {
     const newMatrix = [...payoffMatrix];
@@ -26,7 +29,7 @@ const Index = () => {
   };
 
   const playRound = () => {
-    const result = `Round ${roundNumber + 1} played at ${new Date().toLocaleTimeString()}`;
+    const result = `Round ${roundNumber + 1} played at ${new Date().toLocaleTimeString()} with actions ${player1Action} and ${player2Action}`;
     setGameResults([...gameResults, result]);
     setRoundNumber(roundNumber + 1);
 
@@ -47,8 +50,15 @@ const Index = () => {
           <Thead bg="blue.100">
             <Tr>
               <Th color="blue.800">Player \ Player</Th>
-              <Th color="blue.800">Player 1</Th>
-              <Th color="blue.800">Player 2</Th>
+              <Th color="blue.800" colSpan="2">Player 1</Th>
+              <Th color="blue.800" colSpan="2">Player 2</Th>
+            </Tr>
+            <Tr>
+              <Th color="blue.800"></Th>
+              <Th color="blue.800">Payoff 1</Th>
+              <Th color="blue.800">Payoff 2</Th>
+              <Th color="blue.800">Payoff 1</Th>
+              <Th color="blue.800">Payoff 2</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -70,6 +80,16 @@ const Index = () => {
             ))}
           </Tbody>
         </Table>
+        <Flex direction="row" justify="space-between" align="center" mt={4}>
+          <Select placeholder="Select action for Player 1" onChange={(e) => setPlayer1Action(e.target.value)}>
+            <option value="action1">Action 1</option>
+            <option value="action2">Action 2</option>
+          </Select>
+          <Select placeholder="Select action for Player 2" onChange={(e) => setPlayer2Action(e.target.value)}>
+            <option value="action1">Action 1</option>
+            <option value="action2">Action 2</option>
+          </Select>
+        </Flex>
         <Button colorScheme="teal" size="lg" onClick={playRound}>Play Round</Button>
         <Flex direction="column" align="center" mt={5}>
           <hr />
