@@ -17,6 +17,7 @@ import {
 const Index = () => {
   const [payoffMatrix, setPayoffMatrix] = useState([[0, 0], [0, 0]]);
   const [gameResults, setGameResults] = useState([]);
+  const [roundNumber, setRoundNumber] = useState(0);
 
   const handleInputChange = (value, row, col) => {
     const newMatrix = [...payoffMatrix];
@@ -25,11 +26,10 @@ const Index = () => {
   };
 
   const playRound = () => {
-    // Simulate a game round (this should be replaced with actual game logic)
-    const result = `Round played at ${new Date().toLocaleTimeString()}`;
+    const result = `Round ${roundNumber + 1} played at ${new Date().toLocaleTimeString()}`;
     setGameResults([...gameResults, result]);
+    setRoundNumber(roundNumber + 1);
 
-    // Send results to API endpoint (replace 'YOUR_API_ENDPOINT' with actual endpoint)
     fetch('YOUR_API_ENDPOINT', {
       method: 'POST',
       headers: {
@@ -40,15 +40,15 @@ const Index = () => {
   };
 
   return (
-    <Box p={5}>
+    <Box p={10} bg="gray.100">
       <VStack spacing={4}>
         <Text fontSize="2xl" fontWeight="bold">Game Theory Experiment</Text>
-        <Table variant="simple">
-          <Thead>
+        <Table variant="simple" size="md">
+          <Thead bg="blue.100">
             <Tr>
-              <Th>Player \ Player</Th>
-              <Th>Player 1</Th>
-              <Th>Player 2</Th>
+              <Th color="blue.800">Player \ Player</Th>
+              <Th color="blue.800">Player 1</Th>
+              <Th color="blue.800">Player 2</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -61,6 +61,8 @@ const Index = () => {
                       type="number"
                       value={cell}
                       onChange={(e) => handleInputChange(e.target.value, rowIndex, colIndex)}
+                      fontSize="lg"
+                      width="100px"
                     />
                   </Td>
                 ))}
@@ -68,8 +70,10 @@ const Index = () => {
             ))}
           </Tbody>
         </Table>
-        <Button colorScheme="blue" onClick={playRound}>Play Round</Button>
-        <Flex direction="column" align="center">
+        <Button colorScheme="teal" size="lg" onClick={playRound}>Play Round</Button>
+        <Flex direction="column" align="center" mt={5}>
+          <hr />
+          <Text fontSize="lg" fontWeight="bold" mt={2}>Current Round: {roundNumber}</Text>
           <Text fontSize="lg" fontWeight="bold">Game Results</Text>
           {gameResults.map((result, index) => (
             <Text key={index}>{result}</Text>
